@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify
-import psycopg2
-import geojson
+import psycopg2, geojson
 from shapely import wkb
+import settings
 
 app = Flask(__name__)
 
@@ -20,8 +20,8 @@ def index():
 
 @app.route('/map')
 def get_map():
-    conn = psycopg2.connect(database="airqo", user="postgres",
-                            password="user", host='localhost', port='5432')
+    conn = psycopg2.connect(database=settings.DATABASE, user=settings.USER,
+                            password=settings.PASSWORD, host=settings.HOST, port=settings.PORT)
 
     # create cursor object
     cur = conn.cursor()
