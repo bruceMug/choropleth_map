@@ -48,7 +48,6 @@ def get_map():
 
     cur.close()
     conn.close()
-    # return render_template("index.html", data=feature_collection)
     return jsonify(feature_collection)
 
 
