@@ -1,1 +1,7 @@
 __pycache__
+
+# environment variables
+.env
+
+# settings file
+settings.py
