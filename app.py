@@ -29,7 +29,7 @@ def get_map():
     # cur.execute('''SELECT parish, population_density FROM airqo_data''')
     rows = cur.fetchall()  # fetch all rows
 
-    print(len(rows))
+    # print(len(rows))
     features = []
     i = 0
     for row in rows:
