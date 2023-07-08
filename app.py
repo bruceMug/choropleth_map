@@ -6,9 +6,9 @@ import settings
 app = Flask(__name__)
 
 
-def to_geojson(parish, pm2_5, wkb_string):
+def to_geojson(parish, pm2_5, wkb_string, id):
     geometry = wkb.loads(bytes.fromhex(wkb_string))
-    feature = geojson.Feature(geometry=geometry, properties={
+    feature = geojson.Feature(id=str(id), geometry=geometry, properties={
                               "parish": parish, "pm2_5": pm2_5})
     return feature
 
@@ -33,21 +33,24 @@ def get_map():
     features = []
     i = 0
     for row in rows:
-        if i < 2:
+        if i < 50:
             parish = row[0]
             pm2_5 = row[1]
             geometry = row[2]
-            
-            features.append(to_geojson(parish, round(pm2_5), geometry))
             i = i+1
+            features.append(to_geojson(parish, round(pm2_5), geometry, id=i))
 
     feature_collection = geojson.FeatureCollection(features)
     
+    # f = open('parish_data_5000.json', 'w')
+    # f.write(feature_collection.__str__())
+    # f.close()
     
     # data_map = [{'parish':row[0], 'population_density':row[1]} for row in rows]
 
     cur.close()
     conn.close()
+    # print(feature_collection)
     return jsonify(feature_collection)
 
 
