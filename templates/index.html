@@ -34,7 +34,7 @@
 
       function loadFeatures(features, startIdx) {
         if (startIdx >= features.length) {
-          console.log("all is done");
+          console.log("mapping is done!");
           return;
         }
         const endIdx = Math.min(startIdx + chuckSize, features.length);
@@ -97,11 +97,11 @@
       // Mercator projection
       // Center(20, 20) and 90 degree rotation w.r.t Y axis
 
-      d3.json("./parish_data_5000.json", function (data) {
-        console.log(data.features);
+      d3.json("/map", function (data) {
+        //console.log(data.features);
         loadFeatures(data.features, 0);
       });
-      console.log("Getting from local file");
+      console.log("Getting data from route...");
     </script>
 
     <script
