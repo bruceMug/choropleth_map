@@ -5,3 +5,6 @@ __pycache__
 
 # settings file
 settings.py
+
+# all json files
+*.json
