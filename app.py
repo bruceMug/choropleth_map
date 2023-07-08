@@ -1,7 +1,8 @@
 from flask import Flask, render_template, jsonify
-import psycopg2, geojson
+import psycopg2
+import geojson
 from shapely import wkb
-import settings
+import config
 
 app = Flask(__name__)
 
@@ -20,8 +21,8 @@ def index():
 
 @app.route('/map')
 def get_map():
-    conn = psycopg2.connect(database=settings.DATABASE, user=settings.USER,
-                            password=settings.PASSWORD, host=settings.HOST, port=settings.PORT)
+    conn = psycopg2.connect(database=config.DATABASE, user=config.USER,
+                            password=config.PASSWORD, host=config.HOST, port=config.PORT)
 
     # create cursor object
     cur = conn.cursor()
@@ -33,7 +34,7 @@ def get_map():
     features = []
     i = 0
     for row in rows:
-        if i < 50:
+        if i < 2000:
             parish = row[0]
             pm2_5 = row[1]
             geometry = row[2]
@@ -41,12 +42,10 @@ def get_map():
             features.append(to_geojson(parish, round(pm2_5), geometry, id=i))
 
     feature_collection = geojson.FeatureCollection(features)
-    
+
     # f = open('parish_data_5000.json', 'w')
     # f.write(feature_collection.__str__())
     # f.close()
-    
-    # data_map = [{'parish':row[0], 'population_density':row[1]} for row in rows]
 
     cur.close()
     conn.close()
