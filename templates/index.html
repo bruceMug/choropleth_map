@@ -17,7 +17,11 @@
     <div class="border border-dark">
       <svg width="700" height="600"></svg>
     </div>
-    <div id="tooltip"></div>
+    <div
+      id="tooltip"
+      style="position: absolute; visibility: hidden"
+      class="text-dark bg-info"
+    ></div>
 
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
@@ -25,12 +29,9 @@
       const width = innerWidth;
       const height = innerHeight;
       var svg = d3.select("svg").attr("width", width).attr("height", height);
-      
-      
-      var tooltip = d3.select("#tooltip").style("position", "absolute").style("visibility", "hidden");
-      
 
-    
+      var tooltip = d3.select("#tooltip");
+
       /*var svg = d3.select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height");*/
@@ -87,7 +88,11 @@
             //tooltip
             tooltip
               .style("visibility", "visible")
-              .text(d.properties.name + " " + d.properties.pm2_5);
+              .html(
+                d.properties.parish + "<br>" + "pm2_5: " + d.properties.pm2_5
+              )
+              .style("left", d3.event.pageX + 20 + "px")
+              .style("top", d3.event.pageY - 10 + "px");
           })
           .on("mouseout", function (d) {
             d3.select(this)
@@ -98,6 +103,8 @@
               })
               .style("stroke", "#ffff")
               .style("stroke-width", 1);
+
+            tooltip.style("visibility", "hidden");
           });
 
         setTimeout(function () {
@@ -110,7 +117,7 @@
       // Center(20, 20) and 90 degree rotation w.r.t Y axis
 
       d3.json("../parish_data_30.json", function (data) {
-        console.log('in the map route now...');
+        console.log("in the map route now...");
         //console.log(data.features);
         loadFeatures(data.features, 0);
       });
