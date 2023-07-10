@@ -17,13 +17,20 @@
     <div class="border border-dark">
       <svg width="700" height="600"></svg>
     </div>
+    <div id="tooltip"></div>
+
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     <script>
       const width = innerWidth;
       const height = innerHeight;
       var svg = d3.select("svg").attr("width", width).attr("height", height);
+      
+      
+      var tooltip = d3.select("#tooltip").style("position", "absolute").style("visibility", "hidden");
+      
 
+    
       /*var svg = d3.select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height");*/
@@ -39,7 +46,7 @@
         }
         const endIdx = Math.min(startIdx + chuckSize, features.length);
         const chunk = features.slice(startIdx, endIdx);
-        //console.log("startIdx", startIdx, "endIdx", endIdx);
+        console.log("startIdx", startIdx, "endIdx", endIdx);
 
         var gfg = d3
           .geoMercator()
@@ -76,6 +83,11 @@
 
           .on("mouseover", function (d) {
             d3.select(this).attr("fill", "black");
+
+            //tooltip
+            tooltip
+              .style("visibility", "visible")
+              .text(d.properties.name + " " + d.properties.pm2_5);
           })
           .on("mouseout", function (d) {
             d3.select(this)
@@ -97,7 +109,8 @@
       // Mercator projection
       // Center(20, 20) and 90 degree rotation w.r.t Y axis
 
-      d3.json("/map", function (data) {
+      d3.json("../parish_data_30.json", function (data) {
+        console.log('in the map route now...');
         //console.log(data.features);
         loadFeatures(data.features, 0);
       });
