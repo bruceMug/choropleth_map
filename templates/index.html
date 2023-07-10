@@ -116,7 +116,7 @@
       // Mercator projection
       // Center(20, 20) and 90 degree rotation w.r.t Y axis
 
-      d3.json("../parish_data_30.json", function (data) {
+      d3.json("/map", function (data) {
         console.log("in the map route now...");
         //console.log(data.features);
         loadFeatures(data.features, 0);
