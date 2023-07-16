@@ -6,8 +6,20 @@ __pycache__
 # settings file
 settings.py
 
-# all json files
+# all data json files
 *.json
 
 # original index.html
 templates/index_original.html
+
+# other py files
+app_*.py
+stream.py
+
+# result files
+results.txt
+
+# unused html files
+templates/*_index.html
+
+
