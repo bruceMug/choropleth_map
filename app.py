@@ -12,7 +12,6 @@ app = Flask(__name__)
 load_wkb = wkb.loads
 
 def to_geojson(parish, pm2_5, wkb_string, id):
-    # geometry = wkb.loads(bytes.fromhex(wkb_string))
     geometry = load_wkb(wkb_string)
     feature = geojson.Feature(id=str(id), geometry=geometry, properties={
                               "parish": parish, "pm2_5": pm2_5})
@@ -32,12 +31,14 @@ def get_map():
     # create cursor object
     cur = conn.cursor()
     start = timer()                 # start timer   # todo : remove this
-    cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data''')
+    # cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data''')
+    cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data rows LIMIT 30 OFFSET 0''')
     
-    rows = cur.fetchall()  # fetch all rows
-
+    rows = cur.fetchall()  # fetch all rows 
+    
     end = timer()                                                       # end timer     # todo : remove this
     print("Fetch row time: ", end - start)                            # todo : remove this
+    print("Number of rows: ", len(rows))
     
     start = timer()                                                     # start timer   # todo : remove this
     """
@@ -51,22 +52,18 @@ def get_map():
             i = i+1
             features.append(to_geojson(parish, round(pm2_5), geometry, id=i)) """
     
-    features = [to_geojson(row[0], round(row[1]), row[2], id=i) for i, row in enumerate(rows) if i < 1000]
+    features = [ to_geojson(row[0], round(row[1]), row[2], id=i) for i, row in enumerate(rows) if i < 10000 ]
     
     end = timer()                                                      # end timer     # todo : remove this
-    print("Geojson collection time: ", end - start)                              # todo : remove this
-    
+    print("Geojson collection time: ", end - start)                             # todo : remove this
+    print(type(features[0]))
+    print("Features type: ", type(features))
     feature_collection = geojson.FeatureCollection(features)
-    # print(feature_collection)
-    # todo : check the features of all the rows
-    
-    # f = open('parish_data_2000.json', 'w')
-    # f.write(feature_collection.__str__())
-    # f.close()
-
+    print(type(feature_collection))
     cur.close()
     conn.close()
-    return jsonify(feature_collection)
+    # return jsonify(feature_collection)
+    return True
 
 
 if __name__ == "__main__":
