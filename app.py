@@ -37,22 +37,19 @@ def get_map():
     # total_rows = cur.fetchone()[0]
     total_rows = 500
 
+    if offset < total_rows:
+        cur.execute(f"SELECT parish, pm2_5, geometry FROM airqo_data LIMIT {chunk_size} OFFSET {offset}")
+        rows = cur.fetchall()
+        features = [to_geojson(row[0], round(row[1]), row[2], id=i+offset) for i, row in enumerate(rows)]
+        feature_collection = geojson.FeatureCollection(features)
+        # offset += chunk_size
+        offset = offset + chunk_size
+        print('finished that chunk')
+        print(f'Current Offset: {offset}')
+        
+    else:
+        feature_collection = geojson.FeatureCollection([])  # Empty feature collection if no more rows
 
-    # cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data''')
-    cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data rows LIMIT 30 OFFSET 0''')
-    rows = cur.fetchall()  # fetch all rows 
-    
-    """
-    features = []
-    i = 0
-    for row in rows:
-        if i < 1000:
-            parish = row[0]
-            pm2_5 = row[1]
-            geometry = row[2]
-            i = i+1
-            features.append(to_geojson(parish, round(pm2_5), geometry, id=i)) """
-    
     features = [ to_geojson(row[0], round(row[1]), row[2], id=i) for i, row in enumerate(rows) if i < 10000 ]
     
     feature_collection = geojson.FeatureCollection(features)
