@@ -1,4 +1,4 @@
-# Documentation
+# Documentation 📖
 ## Project title: Choropleth Map Visualization with python, PostgreSQL and D3.js
 
 The goal of this project is to create a web application that leverages PostgreSQL as a database to store geographical data and D3.js library to generate a choropleth map visualization based on the pm2_5. The choropleth map will display the distribution of PM2.5 across different parishes in Uganda.
