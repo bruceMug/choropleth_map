@@ -103,19 +103,24 @@
       //=========================================================================================
 
 
-      d3.json("/map", function (data) {
-        console.log("In the map route now...");
+      
+      function fetchAndRenderMap(offset) {
+        d3.json(`/map?offset=${offset}`, function (data) {
+          console.log("Inside.. and plotting next");
+          console.log(data.features);
 
-        try{
-          //console.log(data.features);
-          console.log("Plotting map next ------------------->");
-        }catch(err){
-          console.log("Error was captured ``````", err, "``````");
-          return;
-        }
+          loadFeatures(data.features, 0);
 
-        loadFeatures(data.features, 0);
-      });
+          if (data.features.length > 0) {
+            const nextOffset = offset + data.features.length;
+            console.log("nextOffset is ", nextOffset);
+            fetchAndRenderMap(nextOffset);
+          }
+        });
+      }
+
+      console.log("am here ==> ");
+      fetchAndRenderMap(0);
 
       //=======================================================
       /*
@@ -125,8 +130,6 @@
       });
       */
       //=======================================================
-
-      console.log("Getting data from route...");
     </script>
 
   
