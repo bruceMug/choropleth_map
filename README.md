@@ -24,7 +24,9 @@ The goal of this project is to create a web application that leverages PostgreSQ
 
 
 ## About the project
+The project is a web application that leverages PostgreSQL as a database to store geographical data and D3.js library to generate a choropleth map visualization based on the pm2_5. The choropleth map will display the distribution of PM2.5 across different parishes in Uganda. 
 
+Overall, this project is meant to provide with hands-on experience in working with databases, data visualization, and integrating different technologies. It will enhance your technical skills, problem-solving abilities, and project management capabilities, all of which are highly valuable in various professional settings.
 
 
 ## Getting started (installation and usage)
