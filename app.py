@@ -62,8 +62,8 @@ def get_map():
     print(type(feature_collection))
     cur.close()
     conn.close()
-    # return jsonify(feature_collection)
-    return True
+    return jsonify(feature_collection)
+    # return True
 
 
 if __name__ == "__main__":

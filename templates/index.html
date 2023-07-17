@@ -13,7 +13,6 @@
   </head>
 
   <body>
-    <!-- <div class="border border-dark" style="width: 700px; height: 600px"> -->
     <div class="border border-dark">
       <svg width="700" height="600"></svg>
     </div>
@@ -31,7 +30,6 @@
 
       var svg = d3.select("svg").attr("width", width).attr("height", height);
       var tooltip = d3.select("#tooltip");
-
 
       //==========================================================added===========================
       const chuckSize = 100;
@@ -125,10 +123,12 @@
       });
 
       //=======================================================
+      /*
       d3.json("/map2", function(data){
         console.log("Map2 route data available...");
         loadFeatures(data.features, 0);
       });
+      */
       //=======================================================
 
       console.log("Getting data from route...");
