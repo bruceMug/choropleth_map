@@ -7,8 +7,8 @@ venv
 # settings file
 settings.py
 
-# all data json files
-*.json
+# all data json files in /
+.json
 
 # original index.html
 templates/index_original.html
