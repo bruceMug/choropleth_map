@@ -4,6 +4,18 @@
 The goal of this project is to create a web application that leverages PostgreSQL as a database to store geographical data and D3.js library to generate a choropleth map visualization based on the pm2_5. The choropleth map will display the distribution of PM2.5 across different parishes in Uganda.
 
 ## Table of contents
+[About the project](#about-the-project)
+[Getting started (installation and usage)](#getting-started-installation-and-usage)
+[Packages and modules](#packages-and-modules)
+[Design decisions](#design-decisions)
+ - [Architecture](#architecture)
+ - [Technologies/frameworks/libraries](#technologiesframeworkslibraries)
+ - [Performance and scalability](#performance-and-scalability)
+ - [Security](#security)
+[Deployment](#deployment)
+[Contributing](#contributing)
+[License](#license)
+
 
 ## About the project
 
@@ -12,16 +24,19 @@ The goal of this project is to create a web application that leverages PostgreSQ
 ## Getting started (installation and usage)
 To get a local copy up and running follow these simple steps.
 1. Clone the repo
-```git clone https://github.com/brucemug/choropleth.git```
+
+```git clone https://github.com/brucemug/choropleth_map.git```
 2. Navigate to the project directory
-```cd choropleth```
+```cd choropleth_map```
 3. Create a virtual environment
 ```python3 -m venv venv```
 4. Activate the virtual environment
-```source venv/bin/activate```
+
+```source venv/bin/activate``` or ```venv\Scripts\activate``` (windows)
 5. Install the required packages
 ```pip install -r requirements.txt```
 6. Create a .env file and add the following variables:
+
 ```DB_NAME=<database name>```
 ```DB_USER=<database user>```
 ```DB_PASSWORD=<database password>```
@@ -59,7 +74,9 @@ This can be installed using the following command:
 
 - d3.js
 Apply the following CDN to your html file:
+
 ```<script src="https://d3js.org/d3.v4.js"></script>```
+
 ```<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>```
 
 
@@ -103,8 +120,12 @@ features = []
             features.append(to_geojson(parish, round(pm2_5), geometry, id=i))
 ```
 
-to 
-```features = [ to_geojson(row[0], round(row[1]), row[2], id=i) for i, row in enumerate(rows) if i < 10000 ]``` (list comprehension).
+to (list comprehension technique)
+```
+features = [ to_geojson(row[0], round(row[1]), row[2], id=i) for i, row in enumerate(rows) if i < 10000 ]
+``` 
+
+
 I also ensured the precompiling of the wkb loading function (```load_wkb = wkb.loads```) happened once instead of every time the function was called by moving the function outside the ```togeojson``` function.
 This (comprehension and precompiling) improved performance by ~ 10 seconds.
 
@@ -113,9 +134,10 @@ Secondly, I used parallel processing to improve performance. I used the ```concu
 
 I employed the use of generator objects to try to progressively fetch data from the database. I used the ```yield``` keyword to create a generator object. I then used the ```next()``` function to fetch the next row from the database. This didn't quite work as expected since the data was still fetched from the database at once. 
 Though ```yield```  wasn't helpful, it was a great learning experience and the keyword can come in handy when returning multiple times from a function rather than the conventional return statement.
-More about ```yield``` can be found here: https://www.programiz.com/python-programming/generator and here: [www.simplilearn.com/yield!](https://www.simplilearn.com/tutorials/python-tutorial/yield-in-python#:~:text=The%20Yield%20keyword%20in%20Python%20is%20similar%20to%20a%20return,of%20simply%20returning%20a%20value)
 
-Next, I needed a solution in which the data was fetched and visualized in chunks.This would work in that only a certain number of rows are fetched from the database, converted to feature collection and then send to d3.js for visualization before another x rows are fetched. I used the global offset variable to keep track of the number of rows that had been fetched. I then used a custom ```fetchandRender()``` function plus ```(`/map?offset=${offset}`)``` in js to achieve the feat. This had been a problem since that start i.e (progressively render the map as the data is fetched from the database).
+More about ```yield``` can be found here: https://www.programiz.com/python-programming/generator and here: [www.simplilearn.com/yield](https://www.simplilearn.com/tutorials/python-tutorial/yield-in-python#:~:text=The%20Yield%20keyword%20in%20Python%20is%20similar%20to%20a%20return,of%20simply%20returning%20a%20value)
+
+Next, I needed a solution in which the data was fetched and visualized in chunks.This would work in that only a certain number of rows are fetched from the database, converted to feature collection and then send to d3.js for visualization before another x rows are fetched. I used the global offset variable to keep track of the number of rows that had been fetched. I then used a custom ```fetchandRenderMap()``` function plus ```(`/map?offset=${offset}`)``` in js to achieve the feat. This had been a problem since that start i.e (progressively render the map as the data is fetched from the database).
 
 Lastly, I used redis for caching. I used the ```redis``` library to connect to the redis server. I then used the ```set``` method to set the key-value pair in the redis server. I then used the ```get``` method to get the value from the redis server.
 

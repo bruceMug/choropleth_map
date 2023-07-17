@@ -4,7 +4,6 @@ import geojson
 from shapely import wkb
 import config
 
-
 app = Flask(__name__)
 
 # precompile wkb loading function
