@@ -4,7 +4,6 @@ import geojson
 from shapely import wkb
 import config
 
-from timeit import default_timer as timer           # for timing the code
 
 app = Flask(__name__)
 
@@ -30,17 +29,10 @@ def get_map():
 
     # create cursor object
     cur = conn.cursor()
-    start = timer()                 # start timer   # todo : remove this
     # cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data''')
     cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data rows LIMIT 30 OFFSET 0''')
-    
     rows = cur.fetchall()  # fetch all rows 
     
-    end = timer()                                                       # end timer     # todo : remove this
-    print("Fetch row time: ", end - start)                            # todo : remove this
-    print("Number of rows: ", len(rows))
-    
-    start = timer()                                                     # start timer   # todo : remove this
     """
     features = []
     i = 0
@@ -54,16 +46,10 @@ def get_map():
     
     features = [ to_geojson(row[0], round(row[1]), row[2], id=i) for i, row in enumerate(rows) if i < 10000 ]
     
-    end = timer()                                                      # end timer     # todo : remove this
-    print("Geojson collection time: ", end - start)                             # todo : remove this
-    print(type(features[0]))
-    print("Features type: ", type(features))
     feature_collection = geojson.FeatureCollection(features)
-    print(type(feature_collection))
     cur.close()
     conn.close()
     return jsonify(feature_collection)
-    # return True
 
 
 if __name__ == "__main__":
