@@ -42,14 +42,6 @@
       //const delaySeconds = 1;
 
       function loadFeatures(features, startIdx) {
-        if (startIdx >= features.length) {
-          console.log("mapping is done!");
-          return;
-        }
-        const endIdx = Math.min(startIdx + chuckSize, features.length);
-        const chunk = features.slice(startIdx, endIdx);
-        //console.log("startIdx", startIdx, "endIdx", endIdx);
-
         var gfg = d3
           .geoMercator()
           .scale(width / 0.1 / Math.PI) //==uganda===
@@ -70,7 +62,7 @@
         svg
           .append("g")
           .selectAll("path")
-          .data(chunk)
+          .data(features)
           .enter()
           .append("path")
           .attr("d", path)
@@ -106,10 +98,7 @@
 
             tooltip.style("visibility", "hidden");
           });
-
-        setTimeout(function () {
-          loadFeatures(features, endIdx);
-        }, delaySeconds * 1000);
+        console.log("mapping is done!");
       }
       //=========================================================================================
 
