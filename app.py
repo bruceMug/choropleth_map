@@ -15,6 +15,7 @@ def to_geojson(parish, pm2_5, wkb_string, id):
                               "parish": parish, "pm2_5": pm2_5})
     return feature
 
+offset = 0 # Global variable to keep track of current offset
 
 @app.route('/')
 def index():
@@ -48,6 +49,7 @@ def get_map():
     feature_collection = geojson.FeatureCollection(features)
     cur.close()
     conn.close()
+    print('Returning feature collection')
     return jsonify(feature_collection)
 
 
