@@ -97,6 +97,7 @@ Apply the following CDN to your html file:
 ### Architecture
 The project is designed using the client-server architecture where the client is the web browser and the server is the web server. The client and server communicate over the internet using HTTP protocol. The client sends a request to the server and the server responds with the requested data. The client is responsible for displaying the data to the user. The server is responsible for processing the request and sending the response to the client. The client and server communicate using JSON format.
 
+Project sample geojson obtained after the togeojson() function execution can be found here: [ug.json](/static/ug.json)
 
 
 ### Technologies/frameworks/libraries
@@ -142,6 +143,19 @@ This (comprehension and precompiling) improved performance by ~ 10 seconds.
 
 
 Secondly, I used parallel processing to improve performance. I used the ```concurrent.features``` module to create a pool of processes that would execute the code in parallel. I used the ```map``` method to map the function to the pool of processes. This didn't quite improve performance as expected.
+
+```
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    futures = []
+    for row in rows:
+        futures.append(executor.submit(to_geojson, (row[0], round(row[1]), row[2], i)))
+        i=i+1
+
+    for future in concurrent.futures.as_completed(futures):
+        feature = future.result()
+        features.append(feature)
+
+```
 
 I employed the use of generator objects to try to progressively fetch data from the database. I used the ```yield``` keyword to create a generator object. I then used the ```next()``` function to fetch the next row from the database. This didn't quite work as expected since the data was still fetched from the database at once. 
 Though ```yield```  wasn't helpful, it was a great learning experience and the keyword can come in handy when returning multiple times from a function rather than the conventional return statement.
