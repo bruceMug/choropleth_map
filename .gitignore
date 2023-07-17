@@ -2,6 +2,7 @@ __pycache__
 
 # environment variables
 .env
+venv
 
 # settings file
 settings.py
