@@ -24,11 +24,20 @@ def index():
 
 @app.route('/map')
 def get_map():
+    global offset
+    
     conn = psycopg2.connect(database=config.DATABASE, user=config.USER,
                             password=config.PASSWORD, host=config.HOST, port=config.PORT)
-
     # create cursor object
     cur = conn.cursor()
+    
+    chunk_size = 50
+
+    cur.execute(f"SELECT COUNT(*) FROM airqo_data")
+    # total_rows = cur.fetchone()[0]
+    total_rows = 500
+
+
     # cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data''')
     cur.execute('''SELECT parish, pm2_5, geometry FROM airqo_data rows LIMIT 30 OFFSET 0''')
     rows = cur.fetchall()  # fetch all rows 
