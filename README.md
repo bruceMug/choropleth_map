@@ -91,7 +91,8 @@ Different techniques had to be employed.
 First, I refactored the code to improve performance and scalability for example using the ```timeit``` module to measure the time it took for parts of the code to execute. I did this to identify the parts of the code that were taking a lot of time to execute. I then refactored by changing the following parts of the code:
 
 from 
-```features = []
+```
+features = []
     i = 0
     for row in rows:
         if i < 1000:
@@ -99,7 +100,8 @@ from
             pm2_5 = row[1]
             geometry = row[2]
             i = i+1
-            features.append(to_geojson(parish, round(pm2_5), geometry, id=i))```
+            features.append(to_geojson(parish, round(pm2_5), geometry, id=i))
+```
 
 to 
 ```features = [ to_geojson(row[0], round(row[1]), row[2], id=i) for i, row in enumerate(rows) if i < 10000 ]``` (list comprehension).
