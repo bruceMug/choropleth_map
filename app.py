@@ -11,8 +11,7 @@ load_wkb = wkb.loads
 
 def to_geojson(parish, pm2_5, wkb_string, id):
     geometry = load_wkb(wkb_string)
-    feature = geojson.Feature(id=str(id), geometry=geometry, properties={
-                              "parish": parish, "pm2_5": pm2_5})
+    feature = geojson.Feature(id=str(id), geometry=geometry, properties={"parish": parish, "pm2_5": pm2_5})
     return feature
 
 offset = 0 # Global variable to keep track of current offset
@@ -26,6 +25,7 @@ def index():
 def get_map():
     global offset
     
+    # connect to database
     conn = psycopg2.connect(database=config.DATABASE, user=config.USER,
                             password=config.PASSWORD, host=config.HOST, port=config.PORT)
     # create cursor object
@@ -34,7 +34,7 @@ def get_map():
     chunk_size = 50
 
     cur.execute(f"SELECT COUNT(*) FROM airqo_data")
-    # total_rows = cur.fetchone()[0]
+    # total_rows = cur.fetchone()[0]                    # Get total number of rows in table
     total_rows = 500
 
     if offset < total_rows:
