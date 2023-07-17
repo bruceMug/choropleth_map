@@ -148,7 +148,22 @@ Though ```yield```  wasn't helpful, it was a great learning experience and the k
 
 More about ```yield``` can be found here: https://www.programiz.com/python-programming/generator and here: [www.simplilearn.com/yield](https://www.simplilearn.com/tutorials/python-tutorial/yield-in-python#:~:text=The%20Yield%20keyword%20in%20Python%20is%20similar%20to%20a%20return,of%20simply%20returning%20a%20value)
 
-Next, I needed a solution in which the data was fetched and visualized in chunks.This would work in that only a certain number of rows are fetched from the database, converted to feature collection and then send to d3.js for visualization before another x rows are fetched. I used the global offset variable to keep track of the number of rows that had been fetched. I then used a custom ```fetchandRenderMap()``` function plus ```(`/map?offset=${offset}`)``` in js to achieve the feat. This had been a problem since that start i.e (progressively render the map as the data is fetched from the database).
+Next, I needed a solution in which the data was fetched and visualized in chunks.This would work in that only a certain number of rows are fetched from the database, converted to feature collection and then send to d3.js for visualization before another x rows are fetched. I used the global offset variable to keep track of the number of rows that had been fetched. I then used a custom ```fetchandRenderMap()``` function plus ```(`/map?offset=${offset}`)``` in js to achieve the feat. 
+
+```
+
+    function fetchAndRenderMap(offset) {
+        d3.json(`/map?offset=${offset}`, function (data) {
+            // logic to fetch map and call itself again
+            fetchAndRenderMap(nextOffset);
+        });
+    }
+
+    fetchAndRenderMap(0);
+
+```
+
+This had been a problem since that start i.e (progressively render the map as the data is fetched from the database).
 
 Lastly, I used redis for caching. I used the ```redis``` library to connect to the redis server. I then used the ```set``` method to set the key-value pair in the redis server. I then used the ```get``` method to get the value from the redis server.
 
