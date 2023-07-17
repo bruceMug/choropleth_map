@@ -109,6 +109,9 @@ This (comprehension and precompiling) improved performance by ~ 10 seconds.
 
 Secondly, I used parallel processing to improve performance. I used the ```concurrent.features``` module to create a pool of processes that would execute the code in parallel. I used the ```map``` method to map the function to the pool of processes. This didn't quite improve performance as expected.
 
+I employed the use of generator objects to try to progressively fetch data from the database. I used the ```yield``` keyword to create a generator object. I then used the ```next()``` function to fetch the next row from the database. This didn't quite work as expected since the data was still fetched from the database at once. 
+Though ```yield```  wasn't helpful, it was a great learning experience and the keyword can come in handy when returning multiple times from a function rather than the conventional return statement.
+More about ```yield``` can be found here: https://www.programiz.com/python-programming/generator and here: [www.simplilearn.com/yield!](https://www.simplilearn.com/tutorials/python-tutorial/yield-in-python#:~:text=The%20Yield%20keyword%20in%20Python%20is%20similar%20to%20a%20return,of%20simply%20returning%20a%20value)
 
 Next, I needed a solution in which the data was fetched and visualized in chunks.This would work in that only a certain number of rows are fetched from the database, ocnverted to feature collection and then send to d3.js for visualization before another x rows are fetched. I used the global offset variable to keep track of the number of rows that had been fetched. I then used a custom ```fetchandRender()``` function plus ```(`/map?offset=${offset}`)``` in js to achieve the feat. This had been a problem since that start i.e (progressively render the map as the data is fetched from the database).
 
