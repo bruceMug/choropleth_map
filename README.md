@@ -4,23 +4,23 @@
 The goal of this project is to create a web application that leverages PostgreSQL as a database to store geographical data and D3.js library to generate a choropleth map visualization based on the pm2_5. The choropleth map will display the distribution of PM2.5 across different parishes in Uganda.
 
 ## Table of contents
-[About the project](#about-the-project)
+* [About the project](#about-the-project)
 
-[Getting started (installation and usage)](#getting-started-installation-and-usage)
+* [Getting started (installation and usage)](#getting-started-installation-and-usage)
 
-[Packages and modules](#packages-and-modules)
+* [Packages and modules](#packages-and-modules)
 
-[Design decisions](#design-decisions)
+* [Design decisions](#design-decisions)
  - [Architecture](#architecture)
  - [Technologies/frameworks/libraries](#technologiesframeworkslibraries)
  - [Performance and scalability](#performance-and-scalability)
  - [Security](#security)
 
-[Deployment](#deployment)
+* [Deployment](#deployment)
 
-[Contributing](#contributing)
+* [Contributing](#contributing)
 
-[License](#license)
+* [License](#license)
 
 
 ## About the project
@@ -122,14 +122,14 @@ First, I refactored the code to improve performance and scalability for example 
 from 
 ```
 features = []
-    i = 0
-    for row in rows:
-        if i < 1000:
-            parish = row[0]
-            pm2_5 = row[1]
-            geometry = row[2]
-            i = i+1
-            features.append(to_geojson(parish, round(pm2_5), geometry, id=i))
+i = 0
+for row in rows:
+    if i < 1000:
+        parish = row[0]
+        pm2_5 = row[1]
+        geometry = row[2]
+        i = i+1
+        features.append(to_geojson(parish, round(pm2_5), geometry, id=i))
 ```
 
 to (list comprehension technique)
@@ -154,7 +154,6 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
     for future in concurrent.futures.as_completed(futures):
         feature = future.result()
         features.append(feature)
-
 ```
 
 I employed the use of generator objects to try to progressively fetch data from the database. I used the ```yield``` keyword to create a generator object. I then used the ```next()``` function to fetch the next row from the database. This didn't quite work as expected since the data was still fetched from the database at once. 
@@ -165,16 +164,14 @@ More about ```yield``` can be found here: https://www.programiz.com/python-progr
 Next, I needed a solution in which the data was fetched and visualized in chunks.This would work in that only a certain number of rows are fetched from the database, converted to feature collection and then send to d3.js for visualization before another x rows are fetched. I used the global offset variable to keep track of the number of rows that had been fetched. I then used a custom ```fetchandRenderMap()``` function plus ```(`/map?offset=${offset}`)``` in js to achieve the feat. 
 
 ```
+function fetchAndRenderMap(offset) {
+    d3.json(`/map?offset=${offset}`, function (data) {
+        // logic to fetch map and call itself again
+        fetchAndRenderMap(nextOffset);
+    });
+}
 
-    function fetchAndRenderMap(offset) {
-        d3.json(`/map?offset=${offset}`, function (data) {
-            // logic to fetch map and call itself again
-            fetchAndRenderMap(nextOffset);
-        });
-    }
-
-    fetchAndRenderMap(0);
-
+fetchAndRenderMap(0);
 ```
 
 This had been a problem since that start i.e (progressively render the map as the data is fetched from the database).
@@ -187,6 +184,7 @@ I used the following techniques to improve security: Instead of having the datab
 
 
 ## Deployment
+
 
 ## Contributing
 To contribute to this project, please read the [contributing guidelines](CONTRIBUTING.md).
