@@ -50,9 +50,6 @@ def get_map():
     else:
         feature_collection = geojson.FeatureCollection([])  # Empty feature collection if no more rows
 
-    features = [ to_geojson(row[0], round(row[1]), row[2], id=i) for i, row in enumerate(rows) if i < 10000 ]
-    
-    feature_collection = geojson.FeatureCollection(features)
     cur.close()
     conn.close()
     print('Returning feature collection')
