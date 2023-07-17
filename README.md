@@ -11,10 +11,10 @@ The goal of this project is to create a web application that leverages PostgreSQ
 * [Packages and modules](#packages-and-modules)
 
 * [Design decisions](#design-decisions)
- - [Architecture](#architecture)
- - [Technologies/frameworks/libraries](#technologiesframeworkslibraries)
- - [Performance and scalability](#performance-and-scalability)
- - [Security](#security)
+    * [Architecture](#architecture)
+    * [Technologies/frameworks/libraries](#technologiesframeworkslibraries)
+    * [Performance and scalability](#performance-and-scalability)
+    * [Security](#security)
 
 * [Deployment](#deployment)
 
