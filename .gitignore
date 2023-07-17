@@ -20,7 +20,7 @@ stream.py
 # result files
 results.txt
 
-# unused html files
-templates/*_index.html
+# unused files
+unused
 
 
