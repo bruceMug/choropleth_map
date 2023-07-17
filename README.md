@@ -5,15 +5,21 @@ The goal of this project is to create a web application that leverages PostgreSQ
 
 ## Table of contents
 [About the project](#about-the-project)
+
 [Getting started (installation and usage)](#getting-started-installation-and-usage)
+
 [Packages and modules](#packages-and-modules)
+
 [Design decisions](#design-decisions)
  - [Architecture](#architecture)
  - [Technologies/frameworks/libraries](#technologiesframeworkslibraries)
  - [Performance and scalability](#performance-and-scalability)
  - [Security](#security)
+
 [Deployment](#deployment)
+
 [Contributing](#contributing)
+
 [License](#license)
 
 
@@ -26,15 +32,18 @@ To get a local copy up and running follow these simple steps.
 1. Clone the repo
 
 ```git clone https://github.com/brucemug/choropleth_map.git```
-2. Navigate to the project directory
-```cd choropleth_map```
-3. Create a virtual environment
-```python3 -m venv venv```
+
+2. Navigate to the project directory ```cd choropleth_map```
+
+3. Create a virtual environment ```python3 -m venv venv```
+
 4. Activate the virtual environment
 
 ```source venv/bin/activate``` or ```venv\Scripts\activate``` (windows)
+
 5. Install the required packages
 ```pip install -r requirements.txt```
+
 6. Create a .env file and add the following variables:
 
 ```DB_NAME=<database name>```
@@ -42,8 +51,10 @@ To get a local copy up and running follow these simple steps.
 ```DB_PASSWORD=<database password>```
 ```DB_HOST=<database host>```
 ```DB_PORT=<database port>```
+
 7. Run the app
 ```python app.py``` or ```flask run```
+
 8. Open the browser and navigate to ```http://localhost:5000``` or ```http://127.0.0.1:5000```
 
 
@@ -56,13 +67,13 @@ This can be installed using the following command:
 - postgresql-15.3-2
 This can be installed from the official website: https://www.postgresql.org/download/windows/. Further the postgis bundle can be got from the following link: https://postgis.net/install/ . The postgis bundle contains the postgis extension which is needed to read the geographical data.
 
-- Flask 2.3.2
+- Flask 2.3.2 => 
 This can be installed using ```pip install flask```
 
-- psycopg2 2.9.6
+- psycopg2 2.9.6 => 
 This can be installed using ```pip install psycopg2``` .For connection to the database and querying the data.
 
-- shapely 2.0.1
+- shapely 2.0.1 => 
 This can be installed using ```pip install shapely``` .For converting wkb to geometry coordinates.
 
 - redis 7.0.12
