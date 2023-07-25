@@ -47,6 +47,7 @@
 
       function zoomed() {
         svg.selectAll('path').attr("transform", d3.event.transform).attr('stroke-width', 0.5);
+        svg.selectAll('text').attr("transform", d3.event.transform);
       }
 
       //=======================================================load features======================
