@@ -108,7 +108,20 @@
 
             tooltip.style("visibility", "hidden");
           });
-        console.log("mapping is done!");
+        
+        
+        svg
+          .append("g")
+          .selectAll("text")
+          .data(features)
+          .enter()
+          .filter(function (d) {
+            return d.properties.parish.length < 10;
+          })
+          .append("text")
+          
+        
+          console.log("mapping is done!");
       }
       //==========================================================================================
 
