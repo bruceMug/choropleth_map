@@ -119,7 +119,15 @@
             return d.properties.parish.length < 10;
           })
           .append("text")
-          
+          .attr("x", function (d) {
+              return path.centroid(d)[0];
+          })
+          .attr("y", function (d) {
+              return path.centroid(d)[1];
+          })
+          .text(function (d) {
+              return d.properties.parish;
+          })
         
           console.log("mapping is done!");
       }
