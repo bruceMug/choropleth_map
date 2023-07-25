@@ -42,6 +42,9 @@
 
       //initialize zoom behavior
       const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
+      //apply zoom behavior to svg
+      svg.call(zoom);
+
       
 
       //=======================================================load features======================
