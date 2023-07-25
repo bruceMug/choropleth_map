@@ -39,7 +39,10 @@
       var tooltip = d3.select("#tooltip");
 
       const chuckSize = 50;
-      //const delaySeconds = 1;
+
+      //initialize zoom behavior
+      const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
+      
 
       //=======================================================load features======================
       function loadFeatures(features, startIdx) {
@@ -109,7 +112,7 @@
       function fetchAndRenderMap(offset) {
         d3.json(`/map?offset=${offset}`, function (data) {
           console.log("Inside.. and plotting next");
-          console.log(data.features);
+          //console.log(data.features);
 
           loadFeatures(data.features, 0);
 
