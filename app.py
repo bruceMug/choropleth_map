@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 # precompile wkb loading function
 load_wkb = wkb.loads
-
 def to_geojson(parish, pm2_5, wkb_string, id):
     geometry = load_wkb(wkb_string)
     feature = geojson.Feature(id=str(id), geometry=geometry, properties={"parish": parish, "pm2_5": pm2_5})
@@ -35,7 +34,7 @@ def get_map():
 
     cur.execute(f"SELECT COUNT(*) FROM airqo_data")
     # total_rows = cur.fetchone()[0]                    # Get total number of rows in table
-    total_rows = 500
+    total_rows = 10000
 
     if offset < total_rows:
         cur.execute(f"SELECT parish, pm2_5, geometry FROM airqo_data LIMIT {chunk_size} OFFSET {offset}")
