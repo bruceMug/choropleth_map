@@ -22,3 +22,26 @@
 svg:hover{
     cursor: pointer;
 }
+
+
+
+
+.scale-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    position: relative;
+  }
+  
+  .range-text {
+    padding: 4px 8px;
+    background-color: inherit;
+  }
+  
+  .qualifier {
+    margin-left: 5px;
+  }
+  
+  
