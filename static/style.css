@@ -16,6 +16,9 @@
     z-index: 100;
 }
 
+.scale:hover{color: white;}
+#title{color: black !important;}
+
 svg:hover{
     cursor: pointer;
 }
