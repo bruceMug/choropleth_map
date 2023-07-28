@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blue map d3</title>
     <link rel="stylesheet" href="../static/style.css">
+    <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tooltip.js@1.4.2/dist/umd/tooltip.min.js"></script>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -24,13 +27,15 @@
 
       <div class="scale">
         <div class="scale-item" id="title"> AQI index</div>
-        <div class="scale-item rounded-top px-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tooltip on top" style="background-color: green"> 0 - 12</div>
-        <div class="scale-item px-2" style="background-color: yellow"> 13 - 34</div>
-        <div class="scale-item px-2" style="background-color: orange"> 35 - 55</div>
-        <div class="scale-item px-2" style="background-color: red"> 56 - 150</div>
-        <div class="scale-item px-2" style="background-color: purple"> 150 - 300</div>
-        <div class="scale-item rounded-bottom px-2" id='hazard' style="background-color: maroon"> 301 - 500</div>
+        <div class="scale-item rounded-top px-2" style="background-color: green">0 - 12</div> Good
+        <div class="scale-item px-2" style="background-color: yellow">13 - 34</div>
+        <div class="scale-item px-2" style="background-color: orange">35 - 55</div>
+        <div class="scale-item px-2" style="background-color: red">56 - 150</div>
+        <div class="scale-item px-2" style="background-color: purple">150 - 300</div>
+        <div class="scale-item rounded-bottom px-2" id='hazard' style="background-color: maroon">301 - 500</div>
       </div>
+
+      
     </div>
 
     <div
