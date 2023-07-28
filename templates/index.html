@@ -16,6 +16,11 @@
   <body>
     <div class="border border-dark">
       <svg width="700" height="600"></svg>
+
+      <div class="zoom-buttons">
+        <button class="btn btn-primary fs-2 px-2" onclick="zoomIn()">+</button>
+        <button class="btn btn-primary fs-2 px-2" onclick="zoomOut()">-</button>
+      </div>
     </div>
 
     <div
@@ -29,7 +34,6 @@
     <script>
       const width = innerWidth;
       const height = innerHeight;
-
       var svg = d3.select("svg").attr("width", width).attr("height", height);
       var tooltip = d3.select("#tooltip");
 
