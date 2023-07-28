@@ -14,12 +14,21 @@
   </head>
 
   <body>
-    <div class="border border-dark">
+    <div class="border border-dark mapContainer">
       <svg width="700" height="600"></svg>
 
       <div class="zoom-buttons">
-        <button class="btn btn-primary fs-2 px-2" onclick="zoomIn()">+</button>
-        <button class="btn btn-primary fs-2 px-2" onclick="zoomOut()">-</button>
+        <button class="btn btn-primary" onclick="zoomIn()">+</button>
+        <button class="btn btn-primary" onclick="zoomOut()">-</button>
+      </div>
+
+      <div class="scale">
+        <div class="scale-item" style="background-color: green">green</div>
+        <div class="scale-item" style="background-color: yellow">yellow</div>
+        <div class="scale-item" style="background-color: orange">orange</div>
+        <div class="scale-item" style="background-color: red">red</div>
+        <div class="scale-item" style="background-color: purple">purple</div>
+        <div class="scale-item" style="background-color: maroon">maroon</div>
       </div>
     </div>
 
