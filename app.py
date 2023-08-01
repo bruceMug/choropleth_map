@@ -33,8 +33,8 @@ def get_map():
     chunk_size = 50
 
     cur.execute(f"SELECT COUNT(*) FROM airqo_data")
-    # total_rows = cur.fetchone()[0]                    # Get total number of rows in table
-    total_rows = 500
+    total_rows = cur.fetchone()[0]                    # Get total number of rows in table
+    # total_rows = 500
 
     if offset < total_rows:
         cur.execute(f"SELECT parish, pm2_5, geometry FROM airqo_data LIMIT {chunk_size} OFFSET {offset}")
