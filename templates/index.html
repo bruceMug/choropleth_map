@@ -26,16 +26,14 @@
       </div>
 
       <div class="scale">
-        <div class="scale-item" id="title"> AQI index</div>
-        <div class="scale-item rounded-top px-2" style="background-color: green">0 - 12</div> Good
-        <div class="scale-item px-2" style="background-color: yellow">13 - 34</div>
-        <div class="scale-item px-2" style="background-color: orange">35 - 55</div>
-        <div class="scale-item px-2" style="background-color: red">56 - 150</div>
-        <div class="scale-item px-2" style="background-color: purple">150 - 300</div>
-        <div class="scale-item rounded-bottom px-2" id='hazard' style="background-color: maroon">301 - 500</div>
+        <div class="scale-item" id="title">Scale</div>
+        <div class="scale-item rounded-top px-2" style="background-color: green">Good</div>
+        <div class="scale-item px-2" style="background-color: yellow">Moderate</div>
+        <div class="scale-item px-2" style="background-color: orange">Unhealthy for SGs</div>
+        <div class="scale-item px-2" style="background-color: red">Unhealthy</div>
+        <div class="scale-item px-2" style="background-color: purple">Very Unhealthy</div>
+        <div class="scale-item rounded-bottom px-2" id='hazard' style="background-color: maroon">Harzardous</div>
       </div>
-
-      
     </div>
 
     <div
@@ -53,18 +51,60 @@
       var tooltip = d3.select("#tooltip");
 
       const chuckSize = 50;
+      var path;
+
+      // Define the minimum and maximum font sizes for parish names
+      const minFontSize = 8;
+      const maxFontSize = 15;
 
       //initialize zoom behavior
       const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
       //apply zoom behavior to svg
       svg.call(zoom);
 
+      // Keep track of the current zoom level
+      let currentZoomLevel = 1;
+
       function zoomed() {
-        svg.selectAll('path').attr("transform", d3.event.transform).attr('stroke-width', 0.5);
-        svg.selectAll('text').attr("transform", d3.event.transform);
+        const transform = d3.event.transform;
+        const currentZoomLevel = transform.k;
+        // Apply the zoom transformation to the map paths
+        svg.selectAll("path").attr("transform", transform).attr("stroke-width", 0.5);
+
+        // Update the font size of the text labels based on the current zoom level
+        const fontSize = Math.min(maxFontSize,minFontSize + (currentZoomLevel - 1) * 3);
+
+        // Apply the zoom transformation to the map labels (parish names)
+        svg.selectAll("text").attr("transform", transform).style("font-size", `${fontSize}px`);
+
+        // Reposition the labels to stay centered on the centroid of the map features
+        svg.selectAll("text")
+          .attr("x", function (d) {
+            return path.centroid(d)[0];
+          })
+          .attr("y", function (d) {
+            return path.centroid(d)[1];
+          });
+
+
+        svg.selectAll("text")
+          .style("display", function (d) {
+            return currentZoomLevel >= minZoomToShowNames(d) ? "block" : "none";
+          });
+
       }
 
-      //=======================================================load features======================
+      // Define a function to calculate the minimum zoom level to show names based on feature size
+      function minZoomToShowNames(d) {
+        const minZoomForName = 5; // Adjust this value to control when names appear
+        const bounds = path.bounds(d);
+        const dx = bounds[1][0] - bounds[0][0];
+        const dy = bounds[1][1] - bounds[0][1];
+        const minDimension = Math.min(dx, dy);
+        return minDimension < minZoomForName ? 0 : 1;
+      }
+
+      //============================= plots the map ======================
       function loadFeatures(features, startIdx) {
         var gfg = d3
           .geoMercator()
@@ -76,7 +116,7 @@
           .center([122, 1])
           .translate([width / 2, height / 2]);
 
-        const path = d3.geoPath().projection(gfg);
+        path = d3.geoPath().projection(gfg);
 
         var colorScale = d3
           .scaleThreshold()
@@ -98,8 +138,12 @@
           .attr("stroke", "#ffff")
           .attr("stroke-width", 1)
 
+          .on("click", function (d) {
+            console.log("clicked on ", d.properties.parish);
+          })
+
           .on("mouseover", function (d) {
-            d3.select(this).attr("fill", "black");
+            //d3.select(this).attr("fill", "black");
 
             //tooltip
             tooltip
@@ -130,7 +174,9 @@
           .data(features)
           .enter()
           .filter(function (d) {
+            // filter names depending on name length
             return d.properties.parish.length < 10;
+            //return minZoomToShowNames(d) <= currentZoomLevel;
           })
           .append("text")
           .attr("x", function (d) {
@@ -145,18 +191,16 @@
           .attr("text-anchor", "middle")
           .attr("alignment-baseline", "middle")
           .attr("fill", "black")
-          .style("font-size", "10px");
+          .style("font-size", `${minFontSize}px`);
         
           console.log("mapping is done!");
       }
-      //==========================================================================================
-
       
 
       //=======================================================fetch and render map===============
       function fetchAndRenderMap(offset) {
         d3.json(`/map?offset=${offset}`, function (data) {
-          console.log("Inside.. and plotting next");
+          //console.log("Inside.. and plotting next");
           //console.log(data.features);
 
           loadFeatures(data.features, 0);
@@ -168,20 +212,21 @@
           }
         });
       }
+
+      // Function to zoom in
+      function zoomIn() {
+        svg.transition().call(zoom.scaleBy, 1.5);
+      }
+
+      // Function to zoom out
+      function zoomOut() {
+        svg.transition().call(zoom.scaleBy, 0.5);
+      }
+      
       //===========================================================================================
       console.log("am here ==> ");
       fetchAndRenderMap(0);
 
-
-
-      //=======================================================
-      /*
-      d3.json("/map2", function(data){
-        console.log("Map2 route data available...");
-        loadFeatures(data.features, 0);
-      });
-      */
-      //=======================================================
     </script>
 
     <script
